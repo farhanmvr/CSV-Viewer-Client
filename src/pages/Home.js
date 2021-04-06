@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { convert } from '../functions/file';
 
 const Home = () => {
@@ -23,13 +23,9 @@ const Home = () => {
     formData.append('file', file);
     convert(formData)
       .then((res) => setData(res.data.files.contents))
-      .catch((err) => console.log(err.response))
+      .catch((err) => setError('Something went wrong, Please try again later'))
       .finally(() => setLoading(false));
   };
-
-  useEffect(() => {
-    console.log(file);
-  }, [file]);
 
   const showTable = () => (
     <table class="table table-bordered mt-5">
@@ -79,7 +75,6 @@ const Home = () => {
               </div>
             )}
           </div>
-          {file.type}
         </div>
       </div>
       {data.length !== 0 && showTable()}
