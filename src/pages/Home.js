@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { convert } from '../functions/file';
 
 const Home = () => {
@@ -10,7 +10,10 @@ const Home = () => {
   const handleUpload = () => {
     if (file === '') return;
     setData([]);
-    if (!file.type.includes('csv')) {
+    if (
+      !file.type.includes('csv') &&
+      !file.type.includes('comma-separated-values')
+    ) {
       setError('Select only CSV file');
       return;
     }
@@ -23,6 +26,10 @@ const Home = () => {
       .catch((err) => console.log(err.response))
       .finally(() => setLoading(false));
   };
+
+  useEffect(() => {
+    console.log(file);
+  }, [file]);
 
   const showTable = () => (
     <table class="table table-bordered mt-5">
@@ -49,7 +56,7 @@ const Home = () => {
     <div className="container-fluid">
       <div className="container">
         <div className="row d-flex justify-content-center">
-          <div className="col-6">
+          <div className="col-md-6">
             <div className="input-group mt-4">
               <input
                 disabled={loading}
@@ -72,6 +79,7 @@ const Home = () => {
               </div>
             )}
           </div>
+          {file.type}
         </div>
       </div>
       {data.length !== 0 && showTable()}
